@@ -1,6 +1,6 @@
 # DMOSpeech 2 (Fork)
 
-This repository is a fork of the original [DMOSpeech2 repository](https://github.com/yl4579/DMOSpeech2). The original README has been renamed to `org-README.md`.
+This repository is a fork of the original [DMOSpeech2 repository](https://github.com/yl4579/DMOSpeech2). The original README has been renamed to `original-README.md`.
 
 ## Prerequisites
 
