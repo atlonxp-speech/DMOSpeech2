@@ -39,4 +39,5 @@ x_transformers>=1.31.14
 # zhconv
 # zhon
 ipython
+jupyterlab
 
