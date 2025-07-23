@@ -37,3 +37,5 @@ x_transformers>=1.31.14
 # modelscope
 # zhconv
 # zhon
+ipython
+
