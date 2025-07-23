@@ -18,11 +18,6 @@ This repository is a fork of the original [DMOSpeech2 repository](https://github
    ./scripts/setup.sh
    ```
 
-3. **Install additional dependencies (if needed):**
-   ```bash
-   uv pip install ipython
-   ```
-
 ## Jupyter Lab Setup
 
 Launch Jupyter Lab:
