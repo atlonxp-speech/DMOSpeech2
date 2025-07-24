@@ -13,26 +13,39 @@ DMOSpeech2 is a reinforcement learning-based text-to-speech (TTS) system impleme
 # Create and activate Python 3.10 environment with uv
 source setup-source-me.sh
 
-# Download model checkpoints from HuggingFace
+# Download model checkpoints from HuggingFace (~500MB each)
 ./scripts/setup.sh
-
-# Launch Jupyter Lab (optional)
-source .venv/bin/activate && ./jupyter-lab.sh
 ```
 
-### Running Services
+### Running Services (Local Development - Recommended)
 ```bash
-# FastAPI server (port 8000)
-python dmo_tts_api.py
+# FastAPI server (127.0.0.1:8000) - secure
+python scripts/local-fastapi.py
 
-# Gradio UI (port 7860)
-python gradio_app.py
+# Gradio UI (127.0.0.1:7860) - secure
+python scripts/local-gradio.py
+
+# Jupyter Lab (127.0.0.1:8888) - secure
+./scripts/jupyter-lab-local.sh
+```
+
+### Running Services (Network Access - Advanced)
+```bash
+# FastAPI server (0.0.0.0:8000) - network accessible
+python scripts/remote-fastapi.py
+
+# Gradio UI (0.0.0.0:7860) - network accessible  
+python scripts/remote-gradio.py
+
+# Jupyter Lab (0.0.0.0:8888) - network accessible
+./scripts/jupyter-lab-remote.sh
 ```
 
 ### Development Notes
 - **No test suite**: This is a research codebase without unit tests
 - **No linting/formatting**: No automated code quality tools configured
 - **Manual setup**: Uses shell scripts instead of standard Python build tools
+- **Security-focused structure**: Local scripts (127.0.0.1) for secure development, remote scripts (0.0.0.0) for network access
 
 ## Architecture Overview
 
@@ -49,8 +62,10 @@ python gradio_app.py
 - `src/grpo_duration_trainer.py`: GRPO reinforcement learning for duration
 
 ### API Interfaces
-- `dmo_tts_api.py`: FastAPI with `/init_voice` and `/generate_audio` endpoints
-- `gradio_app.py`: Two-tab Gradio interface for voice cloning and synthesis
+- `scripts/local-fastapi.py` / `scripts/remote-fastapi.py`: FastAPI with `/init_voice` and `/generate_audio` endpoints
+- `scripts/local-gradio.py` / `scripts/remote-gradio.py`: Two-tab Gradio interface for voice cloning and synthesis
+- `src/serveDMO.ipynb`: Jupyter notebook FastAPI demo
+- `src/gradio-test.ipynb`: Jupyter notebook Gradio demo
 
 ### Model Loading Flow
 1. Models loaded from `ckpts/` directory
@@ -69,7 +84,8 @@ python gradio_app.py
 
 ### Adding Features
 - New inference methods go in `src/infer.py`
-- API endpoints in `dmo_tts_api.py` or `gradio_app.py`
+- API endpoints in `scripts/local-fastapi.py` or `scripts/local-gradio.py` (for local development)
+- Network-accessible endpoints in `scripts/remote-fastapi.py` or `scripts/remote-gradio.py`
 - Model modifications in `src/unimodel.py` or `src/f5_tts/model/`
 
 ### Common Tasks
@@ -83,7 +99,9 @@ python gradio_app.py
 - Chinese processing requires jieba and pypinyin
 
 ## Important Considerations
-- Models are large (~500MB each) and downloaded on first setup
+- Models are large (~500MB each) and downloaded on first setup to `ckpts/` directory
 - CUDA GPU recommended for reasonable inference speed
 - No streaming support yet - generates complete audio before returning
 - Reference audio quality significantly impacts voice cloning results
+- Use local scripts (127.0.0.1) for secure development, remote scripts (0.0.0.0) only when network access is needed
+- SSH tunnels provide secure remote access: `ssh -L 7860:localhost:7860 -L 8000:localhost:8000 user@host`

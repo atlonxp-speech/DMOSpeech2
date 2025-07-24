@@ -17,6 +17,7 @@ This repository is a fork of the original [DMOSpeech2 repository](https://github
    ```bash
    ./scripts/setup.sh
    ```
+   *Note: This downloads large model files (~500MB each) to the `ckpts/` directory from HuggingFace.*
 
 ## Usage
 
