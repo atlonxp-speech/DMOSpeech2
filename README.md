@@ -18,68 +18,76 @@ This repository is a fork of the original [DMOSpeech2 repository](https://github
    ./scripts/setup.sh
    ```
 
-## Jupyter Lab Setup
+## Usage
 
-Launch Jupyter Lab:
+### Local Development (Recommended)
+
+For single-machine development and testing. Services bind to `127.0.0.1` (localhost only) for security.
+
+#### FastAPI Server
 ```bash
-source .venv/bin/activate && ./jupyter-lab.sh
+python scripts/local-fastapi.py
 ```
+- Access API at: http://127.0.0.1:8000
+- API documentation: http://127.0.0.1:8000/docs
 
-### Notebook Demos
+#### Gradio UI
+```bash
+python scripts/local-gradio.py
+```
+- Access UI at: http://127.0.0.1:7860
 
-Two one-cell demos are provided:
+#### Jupyter Lab
+```bash
+./scripts/jupyter-lab-local.sh
+```
+- Access Jupyter at: http://127.0.0.1:8888
+
+#### Jupyter Notebooks
+Two notebook demos are available in `src/`:
 
 1. **`src/serveDMO.ipynb`** - FastAPI demo
-   - Load and run the single cell to start the FastAPI server
-   - Access the API at `http://localhost:8000`
+   - Run the cell to start FastAPI server on port 8000
 
-2. **`src/gradio-test.ipynb`** - Gradio UI demo
-   - Load and run the single cell to start the Gradio interface
-   - Access the UI at `http://localhost:7860`
+2. **`src/gradio-test.ipynb`** - Gradio UI demo  
+   - Run the cell to start Gradio interface on port 7860
 
-## Standalone Python Servers
+### Remote Access (SSH Tunnels)
 
-### 1. FastAPI Server (without Jupyter)
+To access local services from a remote machine, use SSH port forwarding:
 
 ```bash
-python ./dmo_tts_api.py
-```
+# From your remote machine to access local services
+ssh -L 7860:localhost:7860 -L 8000:localhost:8000 user@hostname
 
-API endpoints:
-- `POST /init_voice` - Initialize voice with reference audio
-- `POST /generate_audio` - Generate speech from text
-
-### 2. Gradio UI Server (without Jupyter)
-
-```bash
-python gradio_app.py
-```
-
-Access the interactive UI at `http://localhost:7860`
-
-## Sample Clients
-
-TBD
-
-## Testing
-
-### Remote Access via SSH Tunnel
-
-To access the Gradio interface (port 7860) or FastAPI (port 8000) from a remote machine, use SSH port forwarding:
-
-```bash
-# From your local machine (e.g., Mac) to access Gradio on remote server
-ssh -L 7860:localhost:7860 user@swarm
-
-# To access both Gradio and FastAPI
-ssh -L 7860:localhost:7860 -L 8000:localhost:8000 user@swarm
-
-# Then access in your local browser:
-# - Gradio UI: http://localhost:7860
+# Then access in your remote browser:
+# - Gradio UI: http://localhost:7860  
 # - FastAPI docs: http://localhost:8000/docs
 ```
 
-This enables microphone access and full UI functionality from your local browser.
+This enables microphone access and full UI functionality from remote browsers while maintaining security.
+
+### Network Access (Advanced)
+
+⚠️ **Security Warning**: These scripts expose services to your local network. Only use on trusted networks behind firewalls.
+
+#### FastAPI Server (Network)
+```bash
+python scripts/remote-fastapi.py
+```
+- Access from any device on your network: http://YOUR_IP:8000
+
+#### Gradio UI (Network)  
+```bash
+python scripts/remote-gradio.py
+```
+- Access from any device on your network: http://YOUR_IP:7860
+
+#### Jupyter Lab (Network)
+```bash
+./scripts/jupyter-lab-remote.sh
+```
+- Access from any device on your network: http://YOUR_IP:8888
 
 ## API Usage Examples
 
@@ -87,15 +95,58 @@ This enables microphone access and full UI functionality from your local browser
 
 ```bash
 # Initialize voice with reference audio
-curl -X POST "http://localhost:8000/init_voice" \
+curl -X POST "http://127.0.0.1:8000/init_voice" \
   -F "audio_file=@reference.wav" \
   -F "reference_text=Your reference text here"
 
 # Generate speech from text
-curl -X POST "http://localhost:8000/generate_audio" \
+curl -X POST "http://127.0.0.1:8000/generate_audio" \
   -F "target_text=This is the text I want synthesized." \
   --output generated_audio.wav
 ```
+
+For network access, replace `127.0.0.1` with your server's IP address.
+
+## Security Considerations
+
+### Local Development (127.0.0.1)
+- ✅ **Secure**: Services only accessible from the same machine
+- ✅ **Recommended**: For development and testing
+- ✅ **Safe**: No network exposure
+
+### SSH Tunnels
+- ✅ **Secure**: Encrypted connection to remote services
+- ✅ **Flexible**: Access remote services as if they were local
+- ✅ **Best Practice**: For remote access to development servers
+
+### Network Access (0.0.0.0)
+- ⚠️ **Caution Required**: Exposes services to local network
+- ⚠️ **Firewall Needed**: Ensure proper network security
+- ⚠️ **No Authentication**: Services have no built-in security
+- ⚠️ **HTTP Only**: No encryption (consider HTTPS for production)
+
+### Production Deployment
+For production use, consider:
+- HTTPS/SSL certificates  
+- Authentication and authorization
+- Rate limiting and monitoring
+- Reverse proxy (nginx, Apache)
+- Network security hardening
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Port already in use**: Change port numbers in scripts if conflicts occur
+2. **Permission denied**: Ensure scripts are executable (`chmod +x scripts/*.sh`)
+3. **Module not found**: Verify virtual environment is activated
+4. **CUDA errors**: Check GPU availability and PyTorch installation
+
+### Getting Help
+
+- Check the original documentation in `original-README.md`
+- Review error logs for specific issues
+- Ensure all prerequisites are installed
 
 ## Acknowledgments
 
@@ -105,4 +156,3 @@ curl -X POST "http://localhost:8000/generate_audio" \
 ---
 
 This fork aims to provide enhanced ease-of-use and seamless integration of DMOSpeech2 into broader workflows and user interfaces.
-

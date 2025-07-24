@@ -76,7 +76,7 @@ def generate_audio(gen_text):
     return (24000, generated_audio), audio_path
 
 with gr.Blocks() as demo:
-    gr.Markdown("# DMOSpeech2 Gradio Interface")
+    gr.Markdown("# DMOSpeech2 Gradio Interface (Network Accessible)")
 
     with gr.Tab("Initialize Voice"):
         prompt_audio = gr.Audio(
@@ -111,6 +111,9 @@ with gr.Blocks() as demo:
             [generated_audio, download_btn]
         )
 
-demo.launch(server_name="0.0.0.0", server_port=7860)
+if __name__ == "__main__":
+    print("Starting Gradio interface on http://0.0.0.0:7860 (network accessible)")
+    print("WARNING: This exposes the service to your local network")
+    demo.launch(server_name="0.0.0.0", server_port=7860)
 
 
