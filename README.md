@@ -61,6 +61,26 @@ Access the interactive UI at `http://localhost:7860`
 
 TBD
 
+## Testing
+
+### Remote Access via SSH Tunnel
+
+To access the Gradio interface (port 7860) or FastAPI (port 8000) from a remote machine, use SSH port forwarding:
+
+```bash
+# From your local machine (e.g., Mac) to access Gradio on remote server
+ssh -L 7860:localhost:7860 user@swarm
+
+# To access both Gradio and FastAPI
+ssh -L 7860:localhost:7860 -L 8000:localhost:8000 user@swarm
+
+# Then access in your local browser:
+# - Gradio UI: http://localhost:7860
+# - FastAPI docs: http://localhost:8000/docs
+```
+
+This enables microphone access and full UI functionality from your local browser.
+
 ## API Usage Examples
 
 ### REST API Example
