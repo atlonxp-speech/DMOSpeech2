@@ -1,3 +1,5 @@
+--index-url https://download.pytorch.org/whl/cu121
+
 # Main dependencies
 accelerate>=0.33.0
 # Note: bitsandbytes has platform restrictions - not for arm64 or Darwin (macOS)
@@ -19,12 +21,12 @@ pypinyin
 safetensors
 soundfile
 tomli
-#torch>=2.0.0
-#torchaudio>=2.0.0
-torchdiffeq
+
 torch==2.2.2+cu121
-torchaudio==2.2.2+cu121
 torchvision==0.17.2+cu121
+torchaudio==2.2.2+cu121
+
+torchdiffeq
 tqdm>=4.65.0
 transformers
 transformers_stream_generator
@@ -43,4 +45,5 @@ x_transformers>=1.31.14
 # zhon
 ipython
 jupyterlab
+
 
