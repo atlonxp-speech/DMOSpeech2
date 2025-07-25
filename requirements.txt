@@ -1,4 +1,9 @@
---index-url https://download.pytorch.org/whl/cu121
+--extra-index-url https://download.pytorch.org/whl/cu121
+
+# PyTorch CUDA-specific dependencies
+torch==2.2.2+cu121
+torchvision==0.17.2+cu121
+torchaudio==2.2.2+cu121
 
 # Main dependencies
 accelerate>=0.33.0
@@ -21,11 +26,6 @@ pypinyin
 safetensors
 soundfile
 tomli
-
-torch==2.2.2+cu121
-torchvision==0.17.2+cu121
-torchaudio==2.2.2+cu121
-
 torchdiffeq
 tqdm>=4.65.0
 transformers
@@ -45,5 +45,6 @@ x_transformers>=1.31.14
 # zhon
 ipython
 jupyterlab
+
 
 
