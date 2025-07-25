@@ -21,6 +21,13 @@ This repository is a fork of the original [DMOSpeech2 repository](https://github
 
 ## Usage
 
+### Google Colab (Cloud GPU)
+
+For quick testing without local setup, use the Google Colab notebook:
+- Open `notebooks/dmospeech2_colab.ipynb` in Google Colab
+- Run all cells to set up environment and launch Gradio interface
+- Provides free GPU access for faster inference
+
 ### Local Development (Recommended)
 
 For single-machine development and testing. Services bind to `127.0.0.1` (localhost only) for security.
@@ -45,13 +52,17 @@ python scripts/local-gradio.py
 - Access Jupyter at: http://127.0.0.1:8888
 
 #### Jupyter Notebooks
-Two notebook demos are available in `src/`:
+Three notebook demos are available:
 
 1. **`src/serveDMO.ipynb`** - FastAPI demo
    - Run the cell to start FastAPI server on port 8000
 
 2. **`src/gradio-test.ipynb`** - Gradio UI demo  
    - Run the cell to start Gradio interface on port 7860
+
+3. **`notebooks/dmospeech2_colab.ipynb`** - Google Colab demo with GPU support
+   - Run DMOSpeech2 in Google Colab with free GPU access
+   - Includes all necessary setup and Gradio interface
 
 ### Remote Access (SSH Tunnels)
 
