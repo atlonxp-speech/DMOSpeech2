@@ -23,8 +23,8 @@ This repository is a fork of the original [DMOSpeech2 repository](https://github
 
 ### HuggingFace Spaces Demo
 
-Try DMOSpeech2 online without any setup:
-- **HuggingFace Spaces**: https://huggingface.co/spaces/yl4579/DMOSpeech2-demo
+Try the original DMOSpeech2 online without any setup:
+- **HuggingFace Spaces** (Original Repository): https://huggingface.co/spaces/yl4579/DMOSpeech2-demo
 
 ### Google Colab (Cloud GPU)
 
