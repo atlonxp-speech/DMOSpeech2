@@ -21,10 +21,15 @@ This repository is a fork of the original [DMOSpeech2 repository](https://github
 
 ## Usage
 
+### HuggingFace Spaces Demo
+
+Try DMOSpeech2 online without any setup:
+- **HuggingFace Spaces**: https://huggingface.co/spaces/yl4579/DMOSpeech2-demo
+
 ### Google Colab (Cloud GPU)
 
 For quick testing without local setup, use the Google Colab notebook:
-- Open `notebooks/dmospeech2_colab.ipynb` in Google Colab
+- Open `DOMSpeech2_gradio_colab_GPU.ipynb` in Google Colab
 - Run all cells to set up environment and launch Gradio interface
 - Provides free GPU access for faster inference
 
@@ -60,7 +65,7 @@ Three notebook demos are available:
 2. **`src/gradio-test.ipynb`** - Gradio UI demo  
    - Run the cell to start Gradio interface on port 7860
 
-3. **`notebooks/dmospeech2_colab.ipynb`** - Google Colab demo with GPU support
+3. **`DOMSpeech2_gradio_colab_GPU.ipynb`** - Google Colab demo with GPU support
    - Run DMOSpeech2 in Google Colab with free GPU access
    - Includes all necessary setup and Gradio interface
 
