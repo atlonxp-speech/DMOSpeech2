@@ -1,0 +1,54 @@
+# DMOSpeech2 Fork - TODO List
+
+## Immediate Tasks
+
+### Testing & Validation
+- [ ] Create and test a notebook for the FastAPI interface (similar to existing Gradio notebook)
+- [ ] Re-test all scripts after requirements.txt changes
+- [ ] Test Gradio API functionality thoroughly
+- [ ] Test FastAPI endpoints and document responses
+
+### Compatibility & Updates
+- [ ] Update DMOSpeech2 to work with latest Python version (currently locked to 3.10)
+- [ ] Update to work with latest PyTorch and CUDA versions
+- [ ] Review and update dependencies for security and compatibility
+
+### Pull Requests
+- [ ] Generate pull requests for fork improvements
+- [ ] Document all changes made in this fork
+- [ ] Prepare contribution guidelines
+
+### Documentation & Examples
+- [ ] Add more usage examples for both FastAPI and Gradio interfaces
+- [ ] Create comprehensive API documentation
+- [ ] Add troubleshooting guide for common issues
+- [ ] Document voice cloning best practices
+
+### Deployment & Distribution
+- [ ] Create wrightmikea space on HuggingFace Spaces
+- [ ] Add Docker support for easier deployment
+- [ ] Create installation guide for different platforms
+
+### Code Quality
+- [ ] Add basic unit tests for critical functionality
+- [ ] Implement logging system for debugging
+- [ ] Add error handling and user-friendly error messages
+- [ ] Consider adding type hints to improve code clarity
+
+### Features & Enhancements
+- [ ] Add streaming audio support for real-time synthesis
+- [ ] Implement batch processing for multiple text inputs
+- [ ] Add support for additional languages
+- [ ] Create voice preset system for quick voice switching
+
+### Performance
+- [ ] Profile and optimize inference speed
+- [ ] Add caching system for repeated requests
+- [ ] Investigate CPU-only inference options
+- [ ] Document GPU memory requirements
+
+### Meta Tasks
+- [ ] Review and prioritize this TODO list
+- [ ] Add more specific TODO items as issues are discovered
+- [ ] Create GitHub issues for major tasks
+- [ ] Set up project board for tracking progress

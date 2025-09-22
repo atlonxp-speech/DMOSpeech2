@@ -1,81 +1,175 @@
-# DMOSpeech 2: Reinforcement Learning for Duration Prediction in Metric-Optimized Speech Synthesis
+# DMOSpeech 2 (Fork)
 
-[![python](https://img.shields.io/badge/Python-3.10-brightgreen)](https://github.com/yl4579/DMOSpeech2)
-[![arXiv](https://img.shields.io/badge/arXiv-2410.06885-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2507.14988)
-[![demo](https://img.shields.io/badge/GitHub-Demo%20page-orange.svg)](https://dmospeech2.github.io/)
+This repository is a fork of the original [DMOSpeech2 repository](https://github.com/yl4579/DMOSpeech2). The original README has been renamed to `original-README.md`.
 
-### Yinghao Aaron Li*, Xilin Jiang*, Fei Tao**, Cheng Niu, Kaifeng Xu, Juntong Song, Nima Mesgarani
+## Prerequisites
 
-> Diffusion-based text-to-speech (TTS) systems have made remarkable progress in zero-shot speech synthesis, yet optimizing all components for perceptual metrics remains challenging. Prior work with DMOSpeech demonstrated direct metric optimization for speech generation components, but duration prediction remained unoptimized. This paper presents DMOSpeech 2, which extends metric optimization to the duration predictor through a reinforcement learning approach. The proposed system implements a novel duration policy framework using group relative preference optimization (GRPO) with speaker similarity and word error rate as reward signals. By optimizing this previously unoptimized component, DMOSpeech 2 creates a more complete metric-optimized synthesis pipeline. Additionally, this paper introduces teacher-guided sampling, a hybrid approach leveraging a teacher model for initial denoising steps before transitioning to the student model, significantly improving output diversity while maintaining efficiency. Comprehensive evaluations demonstrate superior performance across all metrics compared to previous systems, while reducing sampling steps by half without quality degradation. These advances represent a significant step toward speech synthesis systems with metric optimization across multiple components.
->
-> _This work is accomplished in collaborating with Newsbreak._
+- [uv](https://github.com/astral-sh/uv) - Python package installer and virtual environment manager
 
-*: Equal contribution
+## Setup
 
-**: Project leader
+1. **Activate the virtual environment:**
+   ```bash
+   source setup-source-me.sh
+   ```
 
-TODO: 
+2. **Run the setup script:**
+   ```bash
+   ./scripts/setup.sh
+   ```
+   *Note: This downloads large model files (~500MB each) to the `ckpts/` directory from HuggingFace.*
 
-- [ ] Fine-tune vocoder or train HiFTNet for higher acoustic quality
+## Usage
 
-## Pre-requisites
+### HuggingFace Spaces Demo
 
-### Create a separate environment if needed
+Try the original DMOSpeech2 online without any setup:
+- **HuggingFace Spaces** (Original Repository): https://huggingface.co/spaces/yl4579/DMOSpeech2-demo
+
+### Google Colab (Cloud GPU)
+
+For quick testing without local setup, use the Google Colab notebook:
+- Open `DOMSpeech2_gradio_colab_GPU.ipynb` in Google Colab
+- Run all cells to set up environment and launch Gradio interface
+- Provides free GPU access for faster inference
+
+### Local Development (Recommended)
+
+For single-machine development and testing. Services bind to `127.0.0.1` (localhost only) for security.
+
+#### FastAPI Server
+```bash
+python scripts/local-fastapi.py
+```
+- Access API at: http://127.0.0.1:8000
+- API documentation: http://127.0.0.1:8000/docs
+
+#### Gradio UI
+```bash
+python scripts/local-gradio.py
+```
+- Access UI at: http://127.0.0.1:7860
+
+#### Jupyter Lab
+```bash
+./scripts/jupyter-lab-local.sh
+```
+- Access Jupyter at: http://127.0.0.1:8888
+
+#### Jupyter Notebooks
+Three notebook demos are available:
+
+1. **`src/serveDMO.ipynb`** - FastAPI demo
+   - Run the cell to start FastAPI server on port 8000
+
+2. **`src/gradio-test.ipynb`** - Gradio UI demo  
+   - Run the cell to start Gradio interface on port 7860
+
+3. **`DOMSpeech2_gradio_colab_GPU.ipynb`** - Google Colab demo with GPU support
+   - Run DMOSpeech2 in Google Colab with free GPU access
+   - Includes all necessary setup and Gradio interface
+
+### Remote Access (SSH Tunnels)
+
+To access local services from a remote machine, use SSH port forwarding:
 
 ```bash
-conda create -n dmo2 python=3.10
-conda activate dmo2
+# From your remote machine to access local services
+ssh -L 7860:localhost:7860 -L 8000:localhost:8000 user@hostname
+
+# Then access in your remote browser:
+# - Gradio UI: http://localhost:7860  
+# - FastAPI docs: http://localhost:8000/docs
 ```
 
-### Install required packages
+This enables microphone access and full UI functionality from remote browsers while maintaining security.
 
-1. Clone this repository:
+### Network Access (Advanced)
+
+⚠️ **Security Warning**: These scripts expose services to your local network. Only use on trusted networks behind firewalls.
+
+#### FastAPI Server (Network)
 ```bash
-git clone https://github.com/yl4579/DMOSpeech2.git
-cd DMOSpeech2
+python scripts/remote-fastapi.py
 ```
-2. Install python requirements: 
+- Access from any device on your network: http://YOUR_IP:8000
+
+#### Gradio UI (Network)  
 ```bash
-pip install -r requirements.txt
+python scripts/remote-gradio.py
 ```
+- Access from any device on your network: http://YOUR_IP:7860
 
-Alternatively, you can also create a [F5-TTS enviornment](https://github.com/SWivid/F5-TTS) and directy run the inference with it. 
+#### Jupyter Lab (Network)
+```bash
+./scripts/jupyter-lab-remote.sh
+```
+- Access from any device on your network: http://YOUR_IP:8888
 
-## Inference
+## API Usage Examples
 
-1. Download checkpoints from [Huggingface](https://huggingface.co/yl4579/DMOSpeech2) to `ckpts` folder.
-  - [model_1500.pt](https://huggingface.co/yl4579/DMOSpeech2/blob/main/model_1500.pt) is the GRPO-finetuned duration predictor checkpoint.
-  - [model_85000.pt](https://huggingface.co/yl4579/DMOSpeech2/blob/main/model_85000.pt) is the DMOSpeech checkpoint (including teacher for teacher-guided sampling).
-
-You can run the following command lines:
+### REST API Example
 
 ```bash
-mkdir ckpts
-cd ckpts
-wget https://huggingface.co/yl4579/DMOSpeech2/resolve/main/model_85000.pt
-wget https://huggingface.co/yl4579/DMOSpeech2/resolve/main/model_1500.pt
+# Initialize voice with reference audio
+curl -X POST "http://127.0.0.1:8000/init_voice" \
+  -F "audio_file=@reference.wav" \
+  -F "reference_text=Your reference text here"
+
+# Generate speech from text
+curl -X POST "http://127.0.0.1:8000/generate_audio" \
+  -F "target_text=This is the text I want synthesized." \
+  --output generated_audio.wav
 ```
 
-2. Run [demo.ipynb](https://github.com/yl4579/DMOSpeech2/blob/main/src/demo.ipynb) to see various inference schemes.
+For network access, replace `127.0.0.1` with your server's IP address.
 
-TODO: 
+## Security Considerations
 
-- [ ] Streaming/Concatenating inference (like F5-TTS)
+### Local Development (127.0.0.1)
+- ✅ **Secure**: Services only accessible from the same machine
+- ✅ **Recommended**: For development and testing
+- ✅ **Safe**: No network exposure
 
-## Training
+### SSH Tunnels
+- ✅ **Secure**: Encrypted connection to remote services
+- ✅ **Flexible**: Access remote services as if they were local
+- ✅ **Best Practice**: For remote access to development servers
 
-### Under construction
+### Network Access (0.0.0.0)
+- ⚠️ **Caution Required**: Exposes services to local network
+- ⚠️ **Firewall Needed**: Ensure proper network security
+- ⚠️ **No Authentication**: Services have no built-in security
+- ⚠️ **HTTP Only**: No encryption (consider HTTPS for production)
 
-TODO: 
+### Production Deployment
+For production use, consider:
+- HTTPS/SSL certificates  
+- Authentication and authorization
+- Rate limiting and monitoring
+- Reverse proxy (nginx, Apache)
+- Network security hardening
 
-- [ ] Clean and test DMOSpeech training code
-- [ ] Clean and test the duration predictor pre-training
-- [ ] Clean and test speaker verification and CTC model training
-- [ ] Clean and test GRPO fine-tuning
+## Troubleshooting
 
-## References
+### Common Issues
 
-- [F5-TTS](https://github.com/SWivid/F5-TTS): Main codebase modified from F5-TTS repo, which also serves as the teacher
-- [DMD2](https://github.com/tianweiy/DMD2): Training recipe
-- [simple_GRPO](https://github.com/lsdefine/simple_GRPO): GRPO training recipe
+1. **Port already in use**: Change port numbers in scripts if conflicts occur
+2. **Permission denied**: Ensure scripts are executable (`chmod +x scripts/*.sh`)
+3. **Module not found**: Verify virtual environment is activated
+4. **CUDA errors**: Check GPU availability and PyTorch installation
 
+### Getting Help
+
+- Check the original documentation in `original-README.md`
+- Review error logs for specific issues
+- Ensure all prerequisites are installed
+
+## Acknowledgments
+
+- Original DMOSpeech2 repository: [DMOSpeech2](https://github.com/yl4579/DMOSpeech2)
+- Additional codebase references: [F5-TTS](https://github.com/SWivid/F5-TTS), [DMD2](https://github.com/tianweiy/DMD2), [simple\_GRPO](https://github.com/lsdefine/simple_GRPO)
+
+---
+
+This fork aims to provide enhanced ease-of-use and seamless integration of DMOSpeech2 into broader workflows and user interfaces.
